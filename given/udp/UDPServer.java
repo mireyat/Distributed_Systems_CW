@@ -80,7 +80,6 @@ public class UDPServer {
 			msg = new MessageInfo(data);
 		}catch(Exception e){
 			System.out.println("Error when creating a new MessageInfo object");
-			e.printStackTrace();
 		}
 
 		// TO-DO: On receipt of first message, initialise the receive buffer

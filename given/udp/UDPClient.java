@@ -63,21 +63,23 @@ public class UDPClient {
 			String total_num_msgs = Integer.toString(countTo);		
 			String sequence_num = Integer.toString(i);
 			String message_to_send = new String();
-			message_to_send = total_num_msgs + "; " + sequence_num;
+			message_to_send = total_num_msgs + ";" + sequence_num;
 
 			send(message_to_send, serverAddr, recvPort);
 		}
 	}
 
 	private void send(String payload, InetAddress destAddr, int destPort) {
-		int				payloadSize = payload.length();
-		byte[]				pktData = new byte[payloadSize];
-		pktData = payload.getBytes();
+		int				payloadSize;
+		byte[]				pktData;
 		DatagramPacket		pkt;
+		payloadSize = payload.length();
+		pktData = new byte[payloadSize];
+		pktData = payload.getBytes();
 
 		// TO-DO: build the datagram packet and send it to the server
+		pkt = new DatagramPacket(pktData, payloadSize, destAddr, destPort);		
 		try{
-			pkt = new DatagramPacket(pktData, payloadSize, destAddr, destPort);
 			sendSoc.send(pkt);
 		}catch(IOException e){
 			System.out.println("Datagram packet couldn't be sent to the server, error");
