@@ -107,7 +107,9 @@ public class UDPServer {
 					m++;
 				}
 			}
-			
+
+				
+			System.out.println("Number of messages sent: " + msg.totalMessages);			
 			if(lost == "no"){
 				System.out.println("There were no messages lost.");
 			}			
