@@ -25,8 +25,6 @@ public class UDPServer {
 	private boolean close;
 
 
-
-
 	public static void main(String args[]) {
 		int	recvPort;
 
@@ -81,7 +79,7 @@ public class UDPServer {
 		try{
 			msg = new MessageInfo(data);
 		}catch(Exception e){
-			//System.out.println("Error when creating a new MessageInfo object");
+			System.out.println("Error when creating a new MessageInfo object");
 			e.printStackTrace();
 		}
 
@@ -115,7 +113,7 @@ public class UDPServer {
 				System.out.println("There were no messages lost.");
 			}			
 			else{	
-				System.out.println("The messages that were lost where: ");
+				System.out.println("The messages that were lost where the ones with sequence number: ");
 				for(int i=0; i<m; i++){
 					System.out.println(lost_msgs[i] + ", ");					
 				}	

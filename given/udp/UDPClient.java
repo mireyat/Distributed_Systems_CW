@@ -71,7 +71,8 @@ public class UDPClient {
 
 	private void send(String payload, InetAddress destAddr, int destPort) {
 		int				payloadSize = payload.length();
-		byte[]				pktData = payload.getBytes();
+		byte[]				pktData = new byte[payloadSize];
+		pktData = payload.getBytes();
 		DatagramPacket		pkt;
 
 		// TO-DO: build the datagram packet and send it to the server
