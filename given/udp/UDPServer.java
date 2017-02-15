@@ -24,6 +24,29 @@ public class UDPServer {
 	private int[] receivedMessages = null;
 	private boolean close;
 
+
+
+
+	public static void main(String args[]) {
+		int	recvPort;
+
+		// Get the parameters from command line
+		if (args.length < 1) {
+			System.err.println("Arguments required: recv port");
+			System.exit(-1);
+		}
+		recvPort = Integer.parseInt(args[0]);
+
+		// TO-DO: Construct Server object and start it by calling run().
+		UDPServer server_object = new UDPServer(recvPort);
+		try{
+		server_object.run();
+		}catch(SocketTimeoutException e){
+			System.out.println("Timeout");
+		}
+	}
+
+
 	private void run() throws SocketTimeoutException{
 		int				pacSize;
 		byte[]			pacData;
@@ -33,18 +56,18 @@ public class UDPServer {
 		//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever
 		
 		while(!close){
-			pacSize = 5000;
-			pacData = new byte[5000];
+			pacSize = 2500;
+			pacData = new byte[2500];
 
 			pac = new DatagramPacket(pacData, pacSize);
-			try{
+			try{ 
 				recvSoc.setSoTimeout(30000);
 				recvSoc.receive(pac);
 			}catch(IOException e){
 				System.out.println("The packet wasn't recieved properly, error");
 				System.exit(-1);
 			}
-			String data_to_send= new String(pac.getData());
+			String data_to_send = new String(pac.getData(), 0, pac.getLength());
 			processMessage(data_to_send);		
 		}
 
@@ -58,7 +81,8 @@ public class UDPServer {
 		try{
 			msg = new MessageInfo(data);
 		}catch(Exception e){
-			System.out.println("Error when creating a new MessageInfo object");
+			//System.out.println("Error when creating a new MessageInfo object");
+			e.printStackTrace();
 		}
 
 		// TO-DO: On receipt of first message, initialise the receive buffer
@@ -74,20 +98,20 @@ public class UDPServer {
 		if((msg.messageNum+1) == msg.totalMessages){
 			close = true;
 				
-			int[] lost_msgs;
+			int[] lost_msgs; // array to store lost message numbers
 			lost_msgs = new int[msg.totalMessages];	
-			String yes_lost= new String("no");
+			String lost= new String("no");
 			int m=0;
 	
 			for(int i=0; i< msg.totalMessages; i++){
 				if(receivedMessages[i] != 1){
-					yes_lost= "yes";
+					lost= "yes";
 					lost_msgs[m]= (i+1);
 					m++;
 				}
 			}
 			
-			if(yes_lost == "no"){
+			if(lost == "no"){
 				System.out.println("There were no messages lost.");
 			}			
 			else{	
@@ -114,24 +138,4 @@ public class UDPServer {
 		// Done Initialisation
 		System.out.println("UDPServer ready");
 	}
-
-	public static void main(String args[]) {
-		int	recvPort;
-
-		// Get the parameters from command line
-		if (args.length < 1) {
-			System.err.println("Arguments required: recv port");
-			System.exit(-1);
-		}
-		recvPort = Integer.parseInt(args[0]);
-
-		// TO-DO: Construct Server object and start it by calling run().
-		UDPServer server_object = new UDPServer(recvPort);
-		try{
-		server_object.run();
-		}catch(SocketTimeoutException e){
-			System.out.println("Timeout");
-		}
-	}
-
 }
