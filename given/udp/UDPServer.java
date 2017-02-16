@@ -11,6 +11,8 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 */
+
+
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
@@ -36,11 +38,13 @@ public class UDPServer {
 		recvPort = Integer.parseInt(args[0]);
 
 		// TO-DO: Construct Server object and start it by calling run().
+
 		UDPServer server_object = new UDPServer(recvPort);
 		try{
 		server_object.run();
+
 		}catch(SocketTimeoutException e){
-			System.out.println("Timeout");
+			System.out.println("Timeout error");
 		}
 	}
 
@@ -50,16 +54,16 @@ public class UDPServer {
 		byte[]			pacData;
 		DatagramPacket 	pac;
 
+
 		// TO-DO: Receive the messages and process them by calling processMessage(...).
-		//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever
-		
+		//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever		
 		while(!close){
 			pacSize = 2500;
 			pacData = new byte[2500];
 
 			pac = new DatagramPacket(pacData, pacSize);
 			try{ 
-				recvSoc.setSoTimeout(30000);
+				recvSoc.setSoTimeout(20000);
 				recvSoc.receive(pac);
 			}catch(IOException e){
 				System.out.println("The packet wasn't recieved properly, error");
@@ -97,7 +101,8 @@ public class UDPServer {
 				
 			int[] lost_msgs; // array to store lost message numbers
 			lost_msgs = new int[msg.totalMessages];	
-			String lost= new String("no");
+			String lost= new String();
+			lost = "no";
 			int m=0;
 	
 			for(int i=0; i< msg.totalMessages; i++){
@@ -137,4 +142,4 @@ public class UDPServer {
 		// Done Initialisation
 		System.out.println("UDPServer ready");
 	}
-}
+} 

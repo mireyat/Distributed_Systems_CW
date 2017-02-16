@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 */
+
 import java.io.*;
 import java.net.*;
 
@@ -64,6 +65,7 @@ public class UDPClient {
 			String sequence_num = Integer.toString(i);
 			String message_to_send = new String();
 			message_to_send = total_num_msgs + ";" + sequence_num;
+//System.out.println("sequence number " + sequence_num);
 
 			send(message_to_send, serverAddr, recvPort);
 		}
@@ -76,7 +78,7 @@ public class UDPClient {
 		payloadSize = payload.length();
 		pktData = new byte[payloadSize];
 		pktData = payload.getBytes();
-
+//System.out.println("sequence number ");
 		// TO-DO: build the datagram packet and send it to the server
 		pkt = new DatagramPacket(pktData, payloadSize, destAddr, destPort);		
 		try{
@@ -87,3 +89,4 @@ public class UDPClient {
 		}
 	}
 }
+
